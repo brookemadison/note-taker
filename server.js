@@ -3,10 +3,12 @@ const express = require('express');
 // const fs = require("fs");
 const app = express();
 
-const { db } = require('./db/db');
+const { notes } = require('./db/db');
 
 app.get('/api/notes', (req, res) => {
-  res.json(db);
+  let results = notes;
+  console.log(req.query)
+  res.json(results);
 });
 
 app.listen(3001, () => {
