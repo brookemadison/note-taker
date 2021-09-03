@@ -1,38 +1,21 @@
 const express = require('express');
-// const path = require("path");
-// const fs = require("fs");
+
 const PORT = process.env.PORT || 3001;
 const app = express();
 
+const apiRoutes = require('./routes/apiRoutes');
+const htmlRoutes = require('./routes/htmlRoutes');
+
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 app.use(express.static('public'));
 
-const { notes } = require('./db/db');
+// Use apiRoutes
+// app.use('/api', apiRoutes);
+// app.use('/', htmlRoutes);
 
-app.get('/api/notes', (req, res) => {
-  let results = notes;
-  console.log(req.query)
-  res.json(results);
-});
-
-app.post('/api/notes', (req, res) => {
-  console.log(req.body);
-  res.json(req.body);
-});
-
-//route to index.html (home page)
-app.get('/index', (req, res) => {
-  res.sendFile(path.join(__dirname, './public/index.html'));
-});
-
-//route to notes.html (note page)
-app.get('/notes', (req, res) => {
-  res.sendFile(path.join(__dirname, './public/notes.html'));
-});
-
-//wildcard route
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, './public/index.html'));
-});
+require('./routes/apiroutes')(app);
+require('./routes/htmlroutes')(app);
 
 app.listen(PORT, () => {
   console.log(`API server now on port ${PORT}!`);
